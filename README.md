@@ -32,3 +32,4 @@ Using PerfMiner, we curate and validate a multi-language dataset (C++, Java, Pyt
 
 - PerfAnnotator-mini directory contains link to the model for download and usage instructions for inference.
 - For the data and results corresponding to each Research Question (RQ), please refer to the respective subdirectories under the /RQs directory.
+- The PerfMiner mining framework tool and the large-scale dataset are currently available upon request. We plan to release them publicly in the near future.

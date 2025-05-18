@@ -1,0 +1,88 @@
+prompt_template = '''
+You are a software performance bugs analyst. You are provided with a GitHub commit in the following format:
+Commit Message: """{commit_message}"""
+Original Code: """{Original_Code}"""
+Modified Code: """{Modified_Code}"""
+Code Diff : """{Code_Diff}"""
+
+The commit is expected to make code changes to fix inefficient code patterns known as performance bugs. 
+
+Your task is to thoroughly examine the GitHub commit to determine the root cause of the inefficiency and then categorize the inefficiency pattern into an appropriate primary category and then a secondary category, if avilable. Use the following reasoning steps to assist your categorization and you MUST choose the category names from the defined **Primary Categories** and then their corresponding **Secondary Categories**:
+
+**Reasoning Steps**:
+1. **Examine the changes**: Review the commit message, original code, modified code, and code diff to understand what specific inefficiency the changes address.
+2. **Determine the most appropriate primary category**: Identify which type of performance inefficiency the commit primarily targets to optimize.
+3. **Identify the most appropriate secondary category**: Specify a more detailed aspect of the inefficiency within the primary category. The secondary category must correspond to its correct primary category.
+4. **If no performance-related categories can be determined**: Respond with "Not Performance-related".
+
+
+**Primary Categories** (Types of Performance Bugs):
+0. **API Misuse**: Inefficiencies arising from improper use of APIs.
+1. **Memory Inefficiency**: Issues related to inefficient memory use.
+2. **Poor Concurrency Control**: Inefficiencies arising from the concurrency and synchronization-related performance bugs. 
+3. **Inefficeint I/O**: Excessive or inefficient disk read/write operations.
+4. **Network Bottlenecks**: Issues that lead to network congestion or excessive latency.
+5. **Inefficient Algorithm/Data-structure**: Use of inefficient algorithms or data structure that are slow or not optimal for the task.
+6. **Parallelization**: Refers to inefficient parallelization or missed opportunities for parallel executions. 
+7. **Micro-architectural**: Performance bugs that originate from inefficient code for underlying hardware micro-architecture. 
+8. **Other**: Any other types of performance inefficiencies not listed above.
+
+**Secondary Categories**:
+- Under **API Misuse**:
+  - *Incorrect API Usage*: Using an API in a way that causes performance issues.
+  - *Deprecated API*: Using an outdated or deprecated API that is less efficient.
+  - *Redundant API Calls*: Making unnecessary API calls that degrade performance.
+  - *Misc.*: Other inefficiencies not listed above.
+- Under **Memory Inefficiency**:
+  - *Memory Leak*: Failure to release memory after its use.
+  - *Unnecessary Memory Allocation*: Allocating more memory than necessary.
+  - *Misc.*: Other inefficiencies not listed above.
+- Under **Poor Concurrency Control**:
+  - *Thread Contention*: High contention among threads competing for resources or deadlocks.
+  - *Unnecessary locks*: Refers to the unnecessary use of locking mechanisms, such as mutexes or semaphores, leading to contention and potential performance bottlenecks.
+  - *Unnecessary Thread Synchronization*: Encompasses situations where threads are unnecessarily synchronized, causing excessive blocking or waiting periods, ultimately degrading performance.
+  - *Misc.*: Other inefficiencies not listed above.
+- Under **Inefficient I/O**:
+  - *Inefficient Disk I/O*: Refers to inefficiencies in reading from or writing to disk, where the code fails to optimize disk I/O operations, leading to slow performance due to excessive disk access or inefficient data handling.
+  - *Inefficient Caching*: Poor use of caching leading to repeated disk reads/writes.
+  - *Unnecessary Logging*: Excessive logging operations that slow down disk performance.
+  - *Misc.*: Other inefficiencies not listed above.
+- Under **Network Bottlenecks**:
+  - *Inefficient Data Transfer*: Poorly optimized data transfer over the network.
+  - *Excessive Network Calls*: Too many redundant network calls increasing latency.
+  - *Misc.*: Other inefficiencies not listed above.
+- Under **Inefficient Algorithm/Data-structure**:
+  - *Suboptimal Data Structures*: Code changes that address the use of nappropriate or iefficient data structures or data types that  are slow or inefficeint.
+  - *Suboptimal Algorithm*: Code changes that address or optimize inefficient algorithms. These code changes are typically involves large modifications.
+  - *Expensive Operation*: Inefficiency patterns (i.e. high-precision arithmetic operation) that perform a set of operations which incurs high-computational overhead at the runtime.
+  - *Unnecessary computations*: Unnecessary or duplicated operations/computations.
+  - *Inefficient Loops*: Poorly written loops that could be optimized.
+  - *Misc.*: Other inefficiencies not listed above.
+- Under **Parallelization**:
+  - *Missing Parallelism*: The code fails to utilize parallel computations  such as  SIMD vectorization, GPU and Task parallelism.
+  - *Inefficient Parallelism*: Inefficient implementation (i.e load imbalance) of parallel algorithm that fails to reap the full benefit of the resources such as CPU,GPU
+  - *Misc.*: Other inefficiencies not listed above.
+- Under **Micro-architectural**:
+  - *Data Locality*: Inefficiency due to memory/data locality that arises from false sharing, inefficient GPU memroy acces etc.    
+  - *Missed Compiler Optimization*:  Refers to loop unrolling, function inlining etc.
+  - *Misc.*: Other micro-architectural inefficiencies not listed above, such as register spilling, inefficient host to GPU device communcation etc.
+
+
+You MUST provide your output in the followign format:
+  - If both primary and secondary categories are determined following Step 1, 2 and 3: [primary category::secondary category]. Ensure the secondary category corresponds to its correct primary category. 
+  - If only primary category is available: [primary category]
+  - If no performance-related categories can be determined: [Not Performance-related]
+
+- Commit Message: 
+{commit_message}
+
+- Original Code:
+```{Original_Code}```
+
+- Modified Code:
+```{Modified_Code}```
+
+Code Diff:
+```{Code_Diff}```
+
+Model Response: '''

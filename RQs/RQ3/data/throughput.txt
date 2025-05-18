@@ -1,0 +1,7 @@
+--- Throughput(cpu) Summary Result ---
+
+Model: PerfAnnotator-mini
+Throughput: 3597.45 tokens/sec
+
+Model: Phi-4-mini
+Throughput: 0.47 tokens/sec
